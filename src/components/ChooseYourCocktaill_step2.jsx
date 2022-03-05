@@ -14,6 +14,8 @@ import {
 const ChooseYourCocktail = ({
   listOfCocktailsFromApi,
   getDataFromChooseYourCocktail,
+  nextStep,
+  prevStep,
 }) => {
   // All useStates for saving selected values
   const [selectedType, setSelectedType] = useState();
@@ -113,13 +115,16 @@ const ChooseYourCocktail = ({
     });
   };
 
-  let history = useHistory();
-
-  const onSubmit = () => {
-    history.push("/review");
-  };
-
-  const getDataFrom = () => {
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (
+      selectedType &&
+      selectedCategory &&
+      selectedGlass &&
+      selectedIngredients
+    ) {
+      nextStep();
+    }
     getDataFromChooseYourCocktail(
       selectedType,
       selectedCategory,
@@ -157,6 +162,7 @@ const ChooseYourCocktail = ({
             <div className="form-group col-md-10 mt-4">
               <TitleLabel>Category</TitleLabel>
               <Select
+                key="1"
                 onChange={categoriesonChangeHandler}
                 value={[selectedCategory]}
                 getOptionLabel={(label) => label}
@@ -170,6 +176,7 @@ const ChooseYourCocktail = ({
             <div className="form-group col-md-10 mt-4">
               <TitleLabel>Glasses</TitleLabel>
               <Select
+                key="1"
                 getOptionLabel={(label) => label}
                 getOptionValue={(value) => value}
                 value={[selectedGlass]}
@@ -183,6 +190,7 @@ const ChooseYourCocktail = ({
             <div className="form-group col-md-10 mt-4">
               <TitleLabel>List of ingredients</TitleLabel>
               <Select
+                key="1"
                 onChange={(selectedIngredients) =>
                   setSelectedIngredients(selectedIngredients)
                 }
@@ -205,17 +213,12 @@ const ChooseYourCocktail = ({
           </div>
           <Button
             type="button"
+            onClick={() => prevStep()}
             className="btn btn-primary-outline mt-5 me-lg-5"
           >
-            <Link to="/" className="text-decoration-none text-white">
-              Back
-            </Link>
+            Back
           </Button>
-          <Button
-            type="submit"
-            onClick={getDataFrom}
-            className="btn btn-danger-outline mt-5 shadow"
-          >
+          <Button type="submit" className="btn btn-danger-outline mt-5 shadow">
             Review Order
           </Button>
         </form>

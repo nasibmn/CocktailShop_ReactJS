@@ -8,7 +8,7 @@ import {
   TitleLabel2,
 } from "./styledcomponents.style";
 
-const Review = ({ listOfCocktailsFromApi, sendFormDataToReview }) => {
+const Review = ({ listOfCocktailsFromApi, sendFormDataToReview, reseet }) => {
   return (
     <>
       <ReviewForm>
@@ -89,7 +89,8 @@ const Review = ({ listOfCocktailsFromApi, sendFormDataToReview }) => {
                 <img
                   className="img-fluid rounded shadow mt-4"
                   src={
-                    listOfCocktailsFromApi.data
+                    listOfCocktailsFromApi.data &&
+                    sendFormDataToReview.selectedIngredients
                       ? listOfCocktailsFromApi.data.drinks
                           .filter(
                             (ingredient, index) =>
@@ -127,10 +128,8 @@ const Review = ({ listOfCocktailsFromApi, sendFormDataToReview }) => {
                   }
                 ></img>
               </div>
-              <Button className="btn-lg mt-4">
-                <Link className="text-decoration-none text-white" to="/">
-                  Create New Order
-                </Link>
+              <Button onClick={() => reseet()} className="btn-lg mt-4">
+                Create New Order
               </Button>
             </div>
           </div>

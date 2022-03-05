@@ -1,24 +1,21 @@
 import React from "react";
 import { Form, Button, TitleLabel } from "./styledcomponents.style";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
 
-const FillTheForm = ({ getDataFromFillTheForm }) => {
+const FillTheForm = ({ getDataFromFillTheForm, nextStep }) => {
   // useForm for inputs and it's validtion
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
     trigger,
   } = useForm();
 
   // useHistory for redirecting after form submit
 
-  let history = useHistory();
-  const onSubmit = (data) => {
-    reset();
-    history.push("/chooseyourcocktail");
+  const onSubmit = (data, e) => {
+    e.preventDefault();
+    nextStep();
     getDataFromFillTheForm(
       data.BarName,
       data.FName,
@@ -26,16 +23,11 @@ const FillTheForm = ({ getDataFromFillTheForm }) => {
       data.Phone,
       data.Email
     );
-    console.log(data);
-  };
-  const onError = (errors) => {
-    history.push("/");
-    console.log(errors);
   };
   return (
     <>
       <Form>
-        <form onSubmit={handleSubmit(onSubmit, onError)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="form-row">
             <div className="form-group col-md-10 mb-3">
               {/* bar title */}
@@ -123,7 +115,7 @@ const FillTheForm = ({ getDataFromFillTheForm }) => {
                 type="tel"
                 className={`form-control shadow ${errors.Phone && "invalid"}`}
                 id="phonenumber"
-                placeholder="example: 05123456789"
+                placeholder="05123456789..."
               />
               {errors.Phone && (
                 <small className="text-danger ms-2">

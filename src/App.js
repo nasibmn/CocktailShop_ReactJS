@@ -1,5 +1,4 @@
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import FillTheForm from "./components/FillTheForm_step1";
 import { BarName, Container } from "./components/styledcomponents.style";
 import { useEffect, useState } from "react";
@@ -8,6 +7,7 @@ import ChooseYourCocktail from "./components/ChooseYourCocktaill_step2";
 import Review from "./components/ReviewTheOrder_step3";
 
 const App = () => {
+  const [step, setStep] = useState(1);
   // fetch All cocktails list from api
   const [listOfCocktailsFromApi, setlistOfCocktailsFromApi] = useState({});
 
@@ -68,42 +68,85 @@ const App = () => {
       emailAddress: emailAddress,
     });
   };
-  return (
-    <Router>
-      <div className="container">
-        <div className="row">
-          <div className="col col-lg-12 col-sm-12">
-            <Container>
-              <BarName>
-                <div>Enjoy Cocktail</div>
-              </BarName>
-            </Container>
-          </div>
-          <div className="col col-lg-12 col-sm-12">
-            <Switch>
-              <Route exact path="/">
-                <FillTheForm getDataFromFillTheForm={getDataFromFillTheForm} />
-              </Route>
-              <Route exact path="/chooseyourcocktail">
-                <ChooseYourCocktail
-                  listOfCocktailsFromApi={listOfCocktailsFromApi}
-                  getDataFromChooseYourCocktail={
-                    getDataFromChooseYourCocktailComponent
-                  }
-                />
-              </Route>
-              <Route exact path="/review">
-                <Review
-                  listOfCocktailsFromApi={listOfCocktailsFromApi}
-                  sendFormDataToReview={getDataFromChildComponents}
-                />
-              </Route>
-            </Switch>
+
+  const nextStep = () => {
+    setStep(step + 1);
+  };
+  const prevStep = () => {
+    setStep(step - 1);
+  };
+  const reseet = () => {
+    setStep(1);
+  };
+  switch (step) {
+    case 1:
+      return (
+        <div className="container">
+          <div className="row">
+            <div className="col col-lg-12 col-sm-12">
+              <Container>
+                <BarName>
+                  <div>Enjoy Cocktail</div>
+                </BarName>
+              </Container>
+            </div>
+            <div className="col col-lg-12 col-sm-12">
+              <FillTheForm
+                getDataFromFillTheForm={getDataFromFillTheForm}
+                nextStep={nextStep}
+              />
+            </div>
           </div>
         </div>
-      </div>
-    </Router>
-  );
+      );
+    case 2:
+      return (
+        <div className="container">
+          <div className="row">
+            <div className="col col-lg-12 col-sm-12">
+              <Container>
+                <BarName>
+                  <div>Enjoy Cocktail</div>
+                </BarName>
+              </Container>
+            </div>
+            <div className="col col-lg-12 col-sm-12">
+              <ChooseYourCocktail
+                listOfCocktailsFromApi={listOfCocktailsFromApi}
+                getDataFromChooseYourCocktail={
+                  getDataFromChooseYourCocktailComponent
+                }
+                nextStep={nextStep}
+                prevStep={prevStep}
+              />
+            </div>
+          </div>
+        </div>
+      );
+    case 3:
+      return (
+        <div className="container">
+          <div className="row">
+            <div className="col col-lg-12 col-sm-12">
+              <Container>
+                <BarName>
+                  <div>Enjoy Cocktail</div>
+                </BarName>
+              </Container>
+            </div>
+            <div className="col col-lg-12 col-sm-12">
+              <Review
+                listOfCocktailsFromApi={listOfCocktailsFromApi}
+                sendFormDataToReview={getDataFromChildComponents}
+                reseet={reseet}
+              />
+            </div>
+          </div>
+        </div>
+      );
+    default:
+      break;
+  }
 };
 
 export default App;
